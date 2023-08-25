@@ -9,7 +9,7 @@
    nano count_columns.py
    ```
 
-2. Paste the following code into the file:
+2. Write the code you need into the file. I will do this:
 
    ```python
    from pyspark.sql import SparkSession
