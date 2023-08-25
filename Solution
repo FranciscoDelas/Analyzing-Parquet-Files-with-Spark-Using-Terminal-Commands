@@ -1,0 +1,77 @@
+
+**Step 1: Create and Edit the count_columns.py File:**
+
+1. From your local system's terminal:
+
+   - Make sure you are in the location where you want to create the `count_columns.py` file.
+
+   ```bash
+   nano count_columns.py
+   ```
+
+2. Paste the following code into the file:
+
+   ```python
+   from pyspark.sql import SparkSession
+
+   # Initialize the Spark session
+   spark = SparkSession.builder.appName("ColumnCount").getOrCreate()
+
+   # Read the Parquet file
+   parquet_file = "/home/raw-flight-data.snappy.parquet"
+   df = spark.read.parquet(parquet_file)
+
+   # Get the column count
+   num_columns = len(df.columns)
+   print("Number of columns:", num_columns)
+
+   # Stop the Spark session
+   spark.stop()
+   ```
+
+3. Save the file and exit the text editor.
+
+**Step 2: Save and Copy the count_columns.py File to the Container:**
+
+1. From your local system's terminal:
+
+   - Make sure you are in the location where the `count_columns.py` file is located.
+
+   ```bash
+   # Copy the count_columns.py file to the /home directory in the container
+   docker cp count_columns.py spark-master:/home/
+   ```
+
+**Step 3: Access the Terminal of the Spark Master Container:**
+
+1. From your local system's terminal:
+
+   ```bash
+   docker exec -it spark-master bash
+   ```
+
+**Step 4: Change to the Directory Where the Parquet File Is Located:**
+
+1. Inside the container's terminal:
+
+   ```bash
+   cd /home
+   ```
+
+**Step 5: Execute the count_columns.py Script Using spark-submit:**
+
+1. Inside the container's terminal:
+
+   ```bash
+   # Add the Spark installation path to the PATH (solution to the problem)
+   export PATH=$PATH:/usr/bin/spark-3.0.0-bin-hadoop3.2/bin
+
+   # Execute the PySpark script using spark-submit
+   spark-submit count_columns.py
+   ```
+
+**Step 6: View the Result and Output:**
+
+1. You should see the output of the script, which will display the number of columns in the Parquet file.
+
+By following these steps, you will have successfully created, saved, and sent the `.py` file to the container and executed the PySpark script to count the columns in the Parquet file within the Spark Master container.
